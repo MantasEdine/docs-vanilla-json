@@ -1,0 +1,30 @@
+:root {
+    --bg:     #0f0f23;
+    --text:   #d4d4d4;
+    --accent: #00cc00;
+    --star:   #ffff66;
+}
+
+
+body {
+    
+    background-color : var(--bg);
+    color : var(--text);
+
+    font-family: "Source Code Pro", monospace;
+}
+h1 {
+    color: var(--accent);
+}
+
+a {
+    color: var(--accent);
+}
+
+a:hover {
+    color: var(--star);
+}
+
+span {
+    font-weight: bold;
+}
