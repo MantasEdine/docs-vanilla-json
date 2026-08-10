@@ -13,13 +13,45 @@
     <p>A JSON serializer turns a data object or structure from a programming language into a text string in JavaScript Object Notation (JSON) format. This string can be easily saved to a file or sent across a network.</p>
     <p>{test: "Bonjour"} ----> {"test": "Bonjour"}</p>
     <p>{regular JS object} ----> {JSON format for JS object}</p>
-    <p>There are actually several cases  we won't be able to go through them all, but you can write any data in JS and convert it here to JSON to get an idea if you've never done it before.</p>
+    <p>There are actually several cases we won't be able to go through them all, but you can write any data in JS and convert it here to JSON to get an idea if you've never done it before.</p>
     <a href="https://www.convertsimple.com/convert-javascript-to-json">CHECK OUT CONVERTER</a>
 
     <h3>Best Part</h3>
     <p>For now, I think everyone has an idea of what we'll start with. We will implement our own <span>JSON.stringify</span> in JavaScript.</p>
-    <h4>I will write code first , let you think about it and then i'will explain every line of code witten</h4>
-    <pre><code></code></pre>
+    <h4>I will write code first , let you think about it and then I'll explain every line of code written</h4>
     <script src="app.js"></script>
+    <pre><code>function stringify(input) {
+    let seen = new WeakSet()
+
+    function serialize(input) {
+        switch (typeof input) {
+            case "string": {
+                let str = ""
+                for (let i = 0; i < input.length; i++) {
+                    if (input[i] === '"') {
+                        str += '\\"'
+                    } else if (input[i] === "\\") {
+                        str += "\\\\"
+                    } else if (input[i] === "\n") {
+                        str += '\\n'
+                    } else if (input[i] === "\t") {
+                        str += '\\t'
+                    } else if (input[i] === '\r') {
+                        str += '\\r'
+                    } else if (input[i] === '\b') {
+                        str += '\\b'
+                    } else if (input[i] === '\f') {
+                        str += '\\f'
+                    } else if (input.charCodeAt(i) <= 0x1F) {
+                        str += '\\u' + input.charCodeAt(i).toString(16).padStart(4, '0')
+                    } else {
+                        str += input[i]
+                    }
+                }
+                return '"' + str + '"'
+            }
+        }
+    }
+}</code></pre>
 </body>
 </html>

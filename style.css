@@ -43,3 +43,15 @@ span {
     background: #16162e;          /* subtle darker fill = code-block feel */
     font-family: "Source Code Pro", monospace;
 }
+pre {
+    background: #16162e;
+    display : inline-block;
+    border: 1px solid var(--star);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;         /* horizontal scroll if a line's too long */
+}
+pre code {
+    font-family: "Source Code Pro", monospace;
+    color: var(--text);
+}
