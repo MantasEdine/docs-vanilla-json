@@ -24,7 +24,22 @@ a {
 a:hover {
     color: var(--star);
 }
+h1:hover{
+    color: var(--star);
+    cursor: pointer;
+}
 
 span {
     font-weight: bold;
+
+}
+
+#copyme {
+    cursor: pointer;
+    color: var(--accent);
+    border: 1px solid var(--text);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;      /* space between text and border */
+    background: #16162e;          /* subtle darker fill = code-block feel */
+    font-family: "Source Code Pro", monospace;
 }
