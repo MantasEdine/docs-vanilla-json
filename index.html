@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>vanilla-json</title>
@@ -55,13 +55,13 @@
 }</code></pre>
 
     <p>I stopped here because I had to explain this part very well. Working with strings is easy, until you meet a special character. X)</p>
-    <p>You might say: "Easy, I'll just mimic the behavior of the original." So a string containing a newline becomes:</p>
+    <p>You might say: "Easy, I'll just mimic the behaviour of the original." So a string containing a newline becomes:</p>
     <p>"Hello \n World"  ---->  "Hello \\n World"</p>
     <p>That's smart, GOOD JOB! A quick remark: if the string does not contain any special character, we simply <span id="return">return "the_input_string"</span>, and if it does contain special characters, we loop through it and escape them, as I showed above.</p>
     <p>After dealing with tab, newline, backspace and so on, are we done? Well, close. We still have around 25 more characters to handle, LOL.</p>
     <p>No worries, I didn't know we had that many either, but the happy part is we can deal with all of them using a single condition (including tab). So why did we write the earlier statements at all? Well, I built this from scratch, and I only learned about this catch-all option when I was on version 0.1.2, so I kept the earlier code as legacy. Don't worry, that <span>if</span> statement barely costs any compute.</p>
 
-    <h4>Strings :</h4>
+    <h4>Strings:</h4>
     <p>The most important part is dealing with strings!</p>
     <pre><code>// you checked the type of input and found it's a String:
 
@@ -82,7 +82,7 @@ return '"' + str + '"'
 
 // And that's it, we're done dealing with Strings ))
 // Okay...
-// so what is all this charCodeAt(i), 0x1F??? what is all thisssss
+// so what is all this charCodeAt(i), 0x1F???  what is all thisssss
 // trust me this is so basic
 // input.charCodeAt(i) simply gives me the character code in hex at the given index i
 // example string: "Hello World", with i = 0, so input[0] = 0x48, which is simply H in hexadecimal, that's it
@@ -92,7 +92,7 @@ return '"' + str + '"'
 // and yes, anything represented in a computer is a numerical value
 // including that H: 0x48 in decimal is 72
 // am I saying all chars, including special chars, are represented as numerical values written in hex or binary? YES
-// and more beautifully, they are even organized: all special chars are from 0 to 31
+// and more beautifully, they are even organised: all special chars are from 0 to 31
 // so all 32 of those chars are special and should be checked? BRAVO
 // so the loop simply converts to hex and checks the interval 0 to 31
 // красавчик (Krasavchik)!! (Handsome in Russian, but also used as slang for smart)
@@ -100,9 +100,9 @@ return '"' + str + '"'
 
     <p>And obviously if no special character is present we simply build our string as we always do, give it extra quotes (function is called stringify for a reason, I mean you can name it whatever you want just understand how it works).</p>
 
-    <p><span>Quick Remark </span> : Strings in JS are primitive-value type even if they behave like Arrays or Objects, they are not when you use a method on them and it works JS simply creates an Object on the fly that gets deleted later.</p>
+    <p><span>Quick Remark</span>: Strings in JS are primitive-value type even if they behave like Arrays or Objects, they are not when you use a method on them and it works JS simply creates an Object on the fly that gets deleted later.</p>
 
-    <h4>Booleans , BigInts , Numbers and Undefined :</h4>
+    <h4>Booleans, BigInts, Numbers and Undefined:</h4>
     <p>This will take 2 minutes to implement literally.</p>
     <pre><code>case "boolean": return String(input)
 case "bigint" : throw new TypeError("Do not know how to serialize a BigInt")
@@ -113,14 +113,82 @@ case "number":
      } else {
         return "null"
      }
-case "undefined": return undefined
-    </code></pre>
-    <p>As you have noticed dear reader implementation is pretty straightforward <span>if</span> Boolean convert to String <span>if</span> BigInt just throw an error JS doesn't know how to convert BigInts <span>if</span> number well kinda tricky but easy if finite convert to String and return but infinite like <span>+infinity</span> and some other cases you can Google well easy JS doesn't know how to deal with those either return null but inside string literals this time don't forget this is like a black hole whatever goes inside goes stringified from other side.))))))</p>
+case "undefined": return undefined</code></pre>
 
+    <p>As you have noticed, dear reader, implementation is pretty straightforward. <span>if</span> boolean, convert to string. <span>if</span> BigInt, just throw an error — JS doesn't know how to convert BigInts. <span>if</span> number, well, kinda tricky, but easy: if finite, convert to string and return, but infinite, like <span>+Infinity</span>, and some other cases you can Google. Well, easy — JS doesn't know how to deal with those either, so return null, but inside string literals this time. Don't forget: this is like a black hole — whatever goes inside gets stringified from the other side.))))))</p>
 
+    <p>I wanted to mention that undefined, numbers, BigInts, and booleans are also primitive value types.</p>
 
+    <p>You might be wondering what other primitive values there are in the JS world. Well, there are Symbols, which I won't mention because I have no idea what they are used for and never had a case where I needed them. And null.</p>
 
+    <p>And null — even though if you do <code>typeof(null)</code> you will get <code>"object"</code>, that's a bug. In reality, it's a type of its own, and it's a primitive value type. Like <code>typeof(5) === "number"</code>, in reality <code>typeof(null) === "null"</code>. Read more <a href="https://dev.to/m0slah/why-typeof-null-object-in-javascript-a-deep-dive-into-a-quirky-bug-n6p">here</a>.</p>
 
+    <p>Now, the last part of our project serializer</p>
+
+    <h4>Objects:</h4>
+
+    <pre><code>case "object":
+    if (input === null) {
+        return "null"
+    }
+
+    else if (typeof input.toJSON === "function") {
+        return serialize(input.toJSON());
+    } else if (Array.isArray(input)) {
+        if (seen.has(input)) throw new TypeError("Converting circular structure to JSON")  // ← guard
+        seen.add(input)                                                                    // ← "I'm inside now"
+
+        if (input.length > 0) {
+            let str = "["
+            for (let i = 0; i < input.length; i++) {
+                str += (serialize(input[i]) ?? "null") + ","
+            }
+            seen.delete(input)                                                             // ← "done, leaving"
+            return str.slice(0, -1) + "]"
+        } else {
+            seen.delete(input)                                                             // ← same, empty case
+            return "[]"
+        }
+
+    } else {
+        if (seen.has(input)) throw new TypeError("Converting circular structure to JSON")  // ← guard
+        seen.add(input)                                                                    // ← "I'm inside now"
+
+        let key_s = Object.keys(input)
+        let str = "{"
+        for (let i = 0; i < key_s.length; i++) {
+            let piece = serialize(input[key_s[i]])
+            if (piece === undefined) continue
+            str += '"' + key_s[i] + '":' + piece + ","
+        }
+
+        seen.delete(input)                                                                 // ← "done, leaving"
+        if (str !== "{") {
+            return str.slice(0, -1) + "}"
+        } else {
+            return "{}"
+        }
+    }
+}
+
+return serialize(input)</code></pre>
+
+    <p>First, we check what type of object we are dealing with. If it's null (bug we mentioned before that typeof(null) expression results in object), anyway, that's simple: we return "null".</p>
+    <p>In the next if statement, you noticed I checked our input.toJSON if it is a function. I serialize what that function returns. What does that even mean???</p>
+    <p>Well, it's so simple. It's just a method you implement on objects which you can also find implemented on built-in objects like Date objects and so on (JSON method).</p>
+    <p>What is the use case of it? Well, we said when we find it, we serialize what it returns! Okay, and why? So the serializer serialises what we want, not everything. Imagine if one of your object properties is password: you don't want that serialized and sent over the Internet for sure, lol.</p>
+    <p>This technique is called duck typing or protocol-based design in JS because it changes from one language to another. For instance, in C++, duck typing is implemented differently.</p>
+    <p>The second case is arrays, and yes, arrays are objects, not a special type. So sad. Actually, it's cool. That's why I love JS: functions are a type and arrays are not, lol. But fun fact: under the hood, functions are special objects. So, is it true that everything in JS is an object? No, that's a stereotype. JS is amazing!!!!</p>
+    <p>Don't pay any attention to WeakSet or seen: that's to avoid circular references, another whole universe. If you like this article, I might make one about that HOT TOPIC, hehe.</p>
+    <p>As you noticed, I built an array and serialized every element, and then returned it inside quotes, and did the same thing for objects? Wow, that is it. That's the explanation. Well, yes, because that is really all I did, lol. Check the type, open { or [, and serialize the content for arrays and values for objects, close the array and return the keys with quotes and their serialized values, close the object too. Return. If empty, return "[]" or "{}". And that is it.</p>
+    <p>Make sure to READ CODE, and you, my friend, have successfully built your SERIALIZER in pure JS.</p>
+
+    <footer>
+        <p>Article Written By Rabia Youcef</p>
+        <a href="https://github.com/MantasEdine">Github</a>
+        <p>FORK</p>
+        <a href="https://github.com/MantasEdine/vanilla-json/tree/main">Project Link</a>
+    </footer>
 
     <script src="app.js"></script>
 </body>

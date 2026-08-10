@@ -5,14 +5,16 @@
     --star:   #ffff66;
 }
 
-
 body {
-    
-    background-color : var(--bg);
-    color : var(--text);
-
+    background-color: var(--bg);
+    color: var(--text);
     font-family: "Source Code Pro", monospace;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
 }
+
 h1 {
     color: var(--accent);
 }
@@ -24,14 +26,14 @@ a {
 a:hover {
     color: var(--star);
 }
-h1:hover{
+
+h1:hover {
     color: var(--star);
     cursor: pointer;
 }
 
 span {
     font-weight: bold;
-
 }
 
 #copyme {
@@ -39,29 +41,56 @@ span {
     color: var(--accent);
     border: 1px solid var(--text);
     border-radius: 4px;
-    padding: 0.2rem 0.5rem;      /* space between text and border */
-    background: #16162e;          /* subtle darker fill = code-block feel */
+    padding: 0.2rem 0.5rem;
+    background: #16162e;
     font-family: "Source Code Pro", monospace;
 }
+
 pre {
     background: #16162e;
-    display : inline-block;
+    display: inline-block;
     border: 1px solid var(--star);
     border-radius: 6px;
     padding: 1rem;
-    overflow-x: auto;         /* horizontal scroll if a line's too long */
+    overflow-x: auto;
+    max-width: 100%;
 }
+
 pre code {
     font-family: "Source Code Pro", monospace;
     color: var(--text);
 }
+
 #return {
-    font-weight : bold;
-    color : var(--star)
+    font-weight: bold;
+    color: var(--star);
 }
 
 h3 {
-
-
     color: var(--star);
+}
+
+footer {
+    margin-top: 4rem;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--star);
+    text-align: center;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+footer a:hover {
+    color: var(--star);
+}
+
+footer p {
+    margin: 0.5rem 0;
+    color: var(--accent);
+    font-weight: bold;
 }
