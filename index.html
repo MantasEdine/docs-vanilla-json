@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>vanilla-json</title>
 </head>
 <body>
     <h1>vanilla-json</h1>
-    <h3>Download Package from NPM, Click to Copy :  <span id="copyme">npm i @rabia_youcef/vanilla-json</span></h3>
-    <p>Why another JSON engine? Well, I wanted to make something that not only taught me how a set of tools I use daily on my coding journey works, but also takes my skills to the next level — and I think building a JSON engine is the perfect project for that. So today, dear reader, I'll teach you how to write your own in JavaScript. And yes, I LOVE JAVASCRIPT (:</p>
+    <h3>Download Package from NPM, Click to Copy: <span id="copyme">npm i @rabia_youcef/vanilla-json</span></h3>
+    <p>Why another JSON engine? Well, I wanted to make something that not only taught me how a set of tools I use daily on my coding journey works, but also takes my skills to the next level. I think building a JSON engine is the perfect project for that. So today, dear reader, I'll teach you how to write your own in JavaScript. And yes, I LOVE JAVASCRIPT (:</p>
 
     <h2>Serializer</h2>
-    <p>A JSON serializer turns a data object or structure from a programming language into a text string in JavaScript Object Notation (JSON) format. This string can be easily saved to a file or sent across a network.</p>
+    <p>A JSON serializer turns a data object or structure from a programming language into a text string in JavaScript Object Notation (JSON) format. This string can easily be saved to a file or sent across a network.</p>
     <p>{test: "Bonjour"} ----> {"test": "Bonjour"}</p>
-    <p>{regular JS object} ----> {JSON format for JS object}</p>
-    <p>There are actually several cases we won't be able to go through them all, but you can write any data in JS and convert it here to JSON to get an idea if you've never done it before.</p>
+    <p>{regular JS object} ----> {JSON format for the JS object}</p>
+    <p>There are actually several cases, and we won't be able to go through them all, but you can write any data in JS and convert it here to get an idea if you've never done it before.</p>
     <a href="https://www.convertsimple.com/convert-javascript-to-json">CHECK OUT CONVERTER</a>
 
     <h3>Best Part</h3>
     <p>For now, I think everyone has an idea of what we'll start with. We will implement our own <span>JSON.stringify</span> in JavaScript.</p>
-    <h4>I will write code first , let you think about it and then I'll explain every line of code written</h4>
-    <script src="app.js"></script>
+    <h4>I will write the code first, let you think about it, and then I'll explain every line written.</h4>
+
     <pre><code>function stringify(input) {
     let seen = new WeakSet()
-
     function serialize(input) {
         switch (typeof input) {
             case "string": {
@@ -53,5 +53,75 @@
         }
     }
 }</code></pre>
+
+    <p>I stopped here because I had to explain this part very well. Working with strings is easy, until you meet a special character. X)</p>
+    <p>You might say: "Easy, I'll just mimic the behavior of the original." So a string containing a newline becomes:</p>
+    <p>"Hello \n World"  ---->  "Hello \\n World"</p>
+    <p>That's smart, GOOD JOB! A quick remark: if the string does not contain any special character, we simply <span id="return">return "the_input_string"</span>, and if it does contain special characters, we loop through it and escape them, as I showed above.</p>
+    <p>After dealing with tab, newline, backspace and so on, are we done? Well, close. We still have around 25 more characters to handle, LOL.</p>
+    <p>No worries, I didn't know we had that many either, but the happy part is we can deal with all of them using a single condition (including tab). So why did we write the earlier statements at all? Well, I built this from scratch, and I only learned about this catch-all option when I was on version 0.1.2, so I kept the earlier code as legacy. Don't worry, that <span>if</span> statement barely costs any compute.</p>
+
+    <h4>Strings :</h4>
+    <p>The most important part is dealing with strings!</p>
+    <pre><code>// you checked the type of input and found it's a String:
+
+
+let str = ""
+for (let i = 0; i < input.length; i++) {
+
+    if (input.charCodeAt(i) <= 0x1F) {
+        str += '\\u' + input.charCodeAt(i).toString(16).padStart(4, '0')
+    } else {
+        str += input[i]
+    }
+}
+return '"' + str + '"'
+
+========================================== COMMENTS ================================================================
+
+
+// And that's it, we're done dealing with Strings ))
+// Okay...
+// so what is all this charCodeAt(i), 0x1F??? what is all thisssss
+// trust me this is so basic
+// input.charCodeAt(i) simply gives me the character code in hex at the given index i
+// example string: "Hello World", with i = 0, so input[0] = 0x48, which is simply H in hexadecimal, that's it
+// okay, and? what is the point of getting string values in hexadecimal
+// hexadecimal is a way to write a numerical value. we humans use decimal
+// hexadecimal and binary are ways to represent numerical values in a computer
+// and yes, anything represented in a computer is a numerical value
+// including that H: 0x48 in decimal is 72
+// am I saying all chars, including special chars, are represented as numerical values written in hex or binary? YES
+// and more beautifully, they are even organized: all special chars are from 0 to 31
+// so all 32 of those chars are special and should be checked? BRAVO
+// so the loop simply converts to hex and checks the interval 0 to 31
+// красавчик (Krasavchik)!! (Handsome in Russian, but also used as slang for smart)
+// then we replace each one with what's needed: a control character like newline (code 10) becomes \\u000a</code></pre>
+
+    <p>And obviously if no special character is present we simply build our string as we always do, give it extra quotes (function is called stringify for a reason, I mean you can name it whatever you want just understand how it works).</p>
+
+    <p><span>Quick Remark </span> : Strings in JS are primitive-value type even if they behave like Arrays or Objects, they are not when you use a method on them and it works JS simply creates an Object on the fly that gets deleted later.</p>
+
+    <h4>Booleans , BigInts , Numbers and Undefined :</h4>
+    <p>This will take 2 minutes to implement literally.</p>
+    <pre><code>case "boolean": return String(input)
+case "bigint" : throw new TypeError("Do not know how to serialize a BigInt")
+
+case "number":
+     if (Number.isFinite(input)) {
+        return String(input)
+     } else {
+        return "null"
+     }
+case "undefined": return undefined
+    </code></pre>
+    <p>As you have noticed dear reader implementation is pretty straightforward <span>if</span> Boolean convert to String <span>if</span> BigInt just throw an error JS doesn't know how to convert BigInts <span>if</span> number well kinda tricky but easy if finite convert to String and return but infinite like <span>+infinity</span> and some other cases you can Google well easy JS doesn't know how to deal with those either return null but inside string literals this time don't forget this is like a black hole whatever goes inside goes stringified from other side.))))))</p>
+
+
+
+
+
+
+    <script src="app.js"></script>
 </body>
 </html>

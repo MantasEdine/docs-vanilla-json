@@ -55,3 +55,13 @@ pre code {
     font-family: "Source Code Pro", monospace;
     color: var(--text);
 }
+#return {
+    font-weight : bold;
+    color : var(--star)
+}
+
+h3 {
+
+
+    color: var(--star);
+}
