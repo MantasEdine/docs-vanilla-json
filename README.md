@@ -25,7 +25,8 @@ portfolio/
 │   ├── article.css       shared article style (vanilla-json docs look)
 │   ├── _template.html    copy this to write a new article
 │   └── build-your-own-json-serializer.html
-└── assets/               put certificate PDFs / images here (optional)
+└── assets/
+    └── Youcef_Rabia_CV.pdf   the downloadable CV (+ any certificate files)
 ```
 
 ---
@@ -62,6 +63,11 @@ you can edit these. Rules that apply everywhere:
 ### Common edits, recipe-style
 
 **Change the tagline / about text** → `data/profile.js`
+
+**Update the CV** → overwrite `assets/Youcef_Rabia_CV.pdf` with the new
+file (keep the same name and nothing else changes; use a new name and
+update `links.cv` in `data/profile.js`). Set `cv: ""` to hide the
+download buttons.
 
 **Add a job** → `data/experience.js`, copy one block into `work`:
 

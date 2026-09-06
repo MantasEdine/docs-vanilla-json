@@ -36,6 +36,7 @@
         ${links.github ? `<a href="${esc(links.github)}" target="_blank" rel="noopener">github</a>` : ""}
         ${links.email ? `<a href="mailto:${esc(links.email)}">email</a>` : ""}
         ${links.npm ? `<a href="${esc(links.npm)}" target="_blank" rel="noopener">npm</a>` : ""}
+        ${links.cv ? `<a href="${esc(links.cv)}" download>cv ↓</a>` : ""}
         ${p.location ? `<span class="hero-loc">📍 ${esc(p.location)}</span>` : ""}
       </div>`;
 
@@ -53,6 +54,7 @@
       <div class="footer-links">
         ${links.email ? `<a href="mailto:${esc(links.email)}">${esc(links.email)}</a>` : ""}
         ${links.github ? `<a href="${esc(links.github)}" target="_blank" rel="noopener">github</a>` : ""}
+        ${links.cv ? `<a href="${esc(links.cv)}" download>download cv</a>` : ""}
       </div>
       <p class="footer-tiny">© ${new Date().getFullYear()} ${esc(p.name)} · built with vanilla HTML/CSS/JS — no framework, obviously</p>`;
   }
