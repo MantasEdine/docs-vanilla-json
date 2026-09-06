@@ -16,11 +16,14 @@ window.PORTFOLIO.profile = {
 
   location: "Algiers, Algeria",
 
-  // Links shown in the hero and the footer
+  // Links shown in the hero and the footer.
+  // "cv" points at the PDF in assets/ — replace that file to update
+  // your CV, or set cv: "" to hide the download button.
   links: {
     github: "https://github.com/MantasEdine",
     email: "rabiayoucef77@gmail.com",
     npm: "https://www.npmjs.com/~rabia_youcef",
+    cv: "assets/Youcef_Rabia_CV.pdf",
   },
 
   // The About section — one string per paragraph.
