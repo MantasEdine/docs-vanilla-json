@@ -1,18 +1,30 @@
 # Youcef Rabia — Portfolio
 
-Pure static site. No backend, no build step, no framework. Open `index.html`
+Pure static site. No backend, no framework, no dependencies. Open `index.html`
 in a browser and it works; deploy the folder on Netlify and it works.
+
+Content is **prerendered**: `node build.js` (run automatically by Netlify on
+every deploy) bakes the full text of every section into `index.html`, so
+crawlers, link previews, and no-JS readers see the real page — not an empty
+skeleton. You never need to run it locally: in the browser, `js/render.js`
+re-renders everything from `data/` on load, so *edit a data file → refresh*
+still just works.
 
 **All content lives in `data/` — one file per section. You never touch
 HTML/CSS/JS to change what the site says.** Edit a data file, save, refresh.
 
 ```
 portfolio/
-├── index.html            page skeleton (section order lives here)
+├── index.html            page skeleton + prerendered content (section
+│                         order lives here; the insides of the containers
+│                         are generated — edit data/, not them)
+├── build.js              prerenders data/ into index.html (Netlify runs it)
 ├── styles.css            all styling — colors at the top in :root
-├── netlify.toml          Netlify config (serve as-is)
+├── netlify.toml          Netlify config (build command + publish dir)
 ├── js/
-│   └── render.js         turns data/ into the page (don't touch)
+│   ├── templates.js      the ONE copy of the HTML templates, shared by
+│   │                     the browser and build.js (don't touch)
+│   └── render.js         injects templates output in the browser (don't touch)
 ├── data/                 ★ EDIT THESE ★
 │   ├── profile.js        name, tagline, links, About paragraphs, footer
 │   ├── experience.js     jobs + education
@@ -37,12 +49,15 @@ Either:
 
 - **Drag & drop** — go to [app.netlify.com/drop](https://app.netlify.com/drop),
   drag this folder in. Done.
-- **Or from Git** — push this folder to a repo, "Import from Git" on Netlify.
-  Build command: *none*. Publish directory: `.` (already set in `netlify.toml`).
+- **Or from Git** (recommended) — push this folder to a repo, "Import from
+  Git" on Netlify. Build command and publish directory are already set in
+  `netlify.toml` (`node build.js`, publish `.`) — accept what it detects.
 - **Or CLI** — `npm i -g netlify-cli && netlify deploy --prod` inside this folder.
 
-There is nothing to build. Netlify just serves the files.
-(It works identically on Vercel or GitHub Pages if you ever move.)
+If you drag & drop instead of deploying from Git, run `node build.js` once
+first so the uploaded `index.html` carries the prerendered content.
+(Works identically on Vercel or GitHub Pages: build command `node build.js`,
+output directory `.`.)
 
 ---
 

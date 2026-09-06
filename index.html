@@ -25,18 +25,193 @@
     </div>
   </nav>
 
+  <!-- The INSIDES of the containers below are generated regions:
+       `node build.js` prerenders data/ into them (Netlify runs it
+       on every deploy) and js/render.js re-renders them in the
+       browser. Edit data/*.js, not the generated content. -->
   <main id="top">
-    <header id="hero"></header>
+    <header id="hero">
+      <div class="hero-kicker">~/youcef-rabia</div>
+      <h1 class="hero-name">Youcef Rabia</h1>
+      <p class="hero-tagline">Software developer. JavaScript and C++ expert.</p>
+      <div class="hero-meta">
+        <a href="https://github.com/MantasEdine" target="_blank" rel="noopener">github</a>
+        <a href="mailto:rabiayoucef77@gmail.com">email</a>
+        <a href="https://www.npmjs.com/~rabia_youcef" target="_blank" rel="noopener">npm</a>
+        <a href="assets/Youcef_Rabia_CV.pdf" download>cv ↓</a>
+        <span class="hero-loc">📍 Algiers, Algeria</span>
+      </div></header>
 
-    <section id="about" class="section"></section>
-    <section id="experience" class="section"></section>
-    <section id="projects" class="section"></section>
-    <section id="skills" class="section"></section>
-    <section id="articles" class="section"></section>
-    <section id="certificates" class="section"></section>
-    <section id="beyond" class="section"></section>
+    <section id="about" class="section">
+      <h2 class="section-title">about</h2>
+      <div class="about"><p>I write JavaScript for a living and C for the love of it. My favorite projects are the ones where I rebuild a tool I use every day — a JSON engine, a regex engine — from nothing, just to see exactly what&#39;s under the floorboards.</p><p>I&#39;ve shipped NestJS microservices with Kafka and Docker at Emploitic, spent two years freelancing across the MERN stack, and studied software engineering at LETI in Saint Petersburg before coming back to Algiers, where I&#39;m now studying hydraulic engineering at USTHB while working in tech part-time.</p><p>I contribute to open source when I can — including a contribution to the official TypeScript website, validated by Jake Bailey himself. Daily drivers: Arch Linux, Neovim, and a terminal.</p><p>My workflow leans hard on AI — I let it build fast, then I test, debug, and rebuild the result by hand until I understand and control every line. Deployment I keep boring on purpose: Vercel, Railway, and Neon handle the ops so I can stay in the code.</p></div></section>
+    <section id="experience" class="section"><h2 class="section-title">experience</h2>
+      <div class="xp-item">
+        <div class="xp-period">2025 — present <span class="xp-now">● now</span></div>
+        <div>
+          <span class="xp-role">IT Manager</span> <span class="xp-company">— REGIIS Security</span>
+          <div class="xp-mode">Part-time · Remote</div>
+          <p class="xp-summary">Building internal automations, maintaining and fixing the company website, and developing new digital services — notably around the company&#39;s expansion into the hotel sector.</p>
+          <div class="tags"><span class="tag">Automation</span><span class="tag">Web</span><span class="tag">IT operations</span></div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-period">2025 — present <span class="xp-now">● now</span></div>
+        <div>
+          <span class="xp-role">Full-Stack Developer &amp; Social Media Manager</span> <span class="xp-company">— PluginDZ</span>
+          <div class="xp-mode">Part-time</div>
+          <p class="xp-summary">Building and running the wholesale charger storefront end to end — Next.js front, Node/Express + Prisma/PostgreSQL back — while managing the brand&#39;s social media presence.</p>
+          <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Express</span><span class="tag">Prisma</span><span class="tag">PostgreSQL</span></div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-period">2023 — 2025</div>
+        <div>
+          <span class="xp-role">Freelance Full-Stack Developer</span> <span class="xp-company">— Independent — MERN stack</span>
+          <div class="xp-mode">Freelance</div>
+          <p class="xp-summary">Two years of client work across the MERN stack: React frontends, Node/Express APIs, MongoDB data layers — scoped, built, shipped, and maintained solo.</p>
+          <div class="tags"><span class="tag">MongoDB</span><span class="tag">Express</span><span class="tag">React</span><span class="tag">Node.js</span></div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-period">2023 · 4 months</div>
+        <div>
+          <span class="xp-role">Backend Developer Intern</span> <span class="xp-company">— Emploitic</span>
+          <div class="xp-mode">Internship</div>
+          <p class="xp-summary">Built microservices in NestJS with TypeScript, communicating over Kafka and shipped in Docker, against both MongoDB and PostgreSQL. First serious dose of OOP architecture at production scale.</p>
+          <div class="tags"><span class="tag">NestJS</span><span class="tag">TypeScript</span><span class="tag">Kafka</span><span class="tag">Docker</span><span class="tag">MongoDB</span><span class="tag">PostgreSQL</span></div>
+        </div>
+      </div><div class="edu-title">// education</div>
+        <div class="edu-item">
+          <span class="edu-degree">Hydraulic Engineering — 3rd year</span>
+          <span class="edu-school"> · USTHB, Algiers</span>
+          <span class="edu-period"> · current</span>
+        </div>
+        <div class="edu-item">
+          <span class="edu-degree">Software Engineering — 2 years</span>
+          <span class="edu-school"> · LETI, Saint Petersburg</span>
+          <span class="edu-period"> · 2021 — 2023</span>
+        </div></section>
+    <section id="projects" class="section">
+      <h2 class="section-title">projects</h2>
+      <div class="project-grid">
+      <div class="project-card">
+        <h3 class="project-name">vanilla-json</h3>
+        <p class="project-oneliner">A JSON engine written from scratch in pure JavaScript.</p>
+        <p class="project-desc">Hand-written tokenizer, recursive descent parser, and serializer — no eval, no native JSON.* anywhere in the implementation. Matches native behavior down to the weird parts: NaN → null, dropped undefined keys, circular-reference TypeErrors, position-aware SyntaxErrors. Published on npm, with its own hand-built documentation site that doubles as a tutorial for writing your own.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">npm package</span><span class="tag">zero dependencies</span></div>
+        <div class="project-links"><a href="https://github.com/MantasEdine/vanilla-json" target="_blank" rel="noopener">Repo</a><a href="https://vanille-json-docs.netlify.app/" target="_blank" rel="noopener">Docs</a><a href="https://www.npmjs.com/package/@rabia_youcef/vanilla-json" target="_blank" rel="noopener">npm</a></div>
+      </div>
+      <div class="project-card">
+        <h3 class="project-name">better-regex</h3>
+        <p class="project-oneliner">A regex engine built from scratch — parser + backtracking matcher.</p>
+        <p class="project-desc">No native RegExp, no dependencies. A recursive descent parser turns the pattern into a tree, then a backtracking matcher walks it against the input, backing off when greedy quantifiers overshoot — the same mechanism that powers real-world engines. Supports alternation, quantifiers, wildcards, and fully nested groups. Published on npm.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">npm package</span><span class="tag">recursive descent</span></div>
+        <div class="project-links"><a href="https://github.com/MantasEdine/better-regex" target="_blank" rel="noopener">Repo</a><a href="https://www.npmjs.com/package/@rabia_youcef/better-regex" target="_blank" rel="noopener">npm</a></div>
+      </div>
+      <div class="project-card">
+        <h3 class="project-name">NFA-based regex engine</h3>
+        <p class="project-oneliner">The same problem, solved the computer-science way: Thompson&#39;s construction.</p>
+        <p class="project-desc">Every regex operation becomes a tiny state machine glued together with ε-transitions; a postfix expression is folded with a stack until one NFA remains. Runs all paths in parallel and never backtracks — the automata-theory counterpart to better-regex, built to understand both halves of how regex engines are made.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">automata theory</span><span class="tag">ε-NFA</span></div>
+        <div class="project-links"><a href="https://github.com/MantasEdine/NFA-based-regex-engine" target="_blank" rel="noopener">Repo</a></div>
+      </div></div>
+      
+      <div class="project-wide">
+        <h3 class="project-name">Everything About Pointers</h3>
+        <p class="project-oneliner">A compile-everything reference for pointers in C and C++.</p>
+        <p class="project-desc">A working reference where every section is code you can actually compile — pointer arithmetic, void*, pointers to pointers, arrays vs. pointers, 2-D and jagged arrays, stack vs. heap, and a hand-rolled memory allocation exercise — all built with -Wall -Wextra and AddressSanitizer wired in, because most pointer bugs are silent until they aren&#39;t. It ships with a Makefile, CI smoke tests, and a small htmx web server that serves the whole thing as a browsable book. I wrote it while studying software engineering at LETI in Saint Petersburg, and it ended up circulating among students there as study material — the thing I&#39;m proudest of about it.</p>
+        <div class="tags"><span class="tag">C</span><span class="tag">C++</span><span class="tag">Make</span><span class="tag">AddressSanitizer</span><span class="tag">htmx</span></div>
+        <div class="project-links"><a href="https://github.com/MantasEdine/Everything-About-Pointers" target="_blank" rel="noopener">Repo</a></div>
+      </div>
+      <div class="client-title">// client work</div>
+      <div class="client-row">
+        <span class="client-name">Plugin.dz</span>
+        <span class="client-desc">Bilingual FR/AR (RTL) wholesale e-commerce catalogue for the Algerian market — Next.js 15 storefront and back-office over an Express + Prisma + PostgreSQL API, with stock-derived navigation and Yalidine delivery flow.</span>
+        <a class="client-link" href="https://github.com/MantasEdine/PluginDZ" target="_blank" rel="noopener">→ repo</a>
+      </div>
+      <div class="client-row">
+        <span class="client-name">Analytics Warehouse</span>
+        <span class="client-desc">Client analytics dashboard built with React and Vite — data views and reporting for warehouse operations.</span>
+        <a class="client-link" href="https://github.com/MantasEdine/analytics_warehouse" target="_blank" rel="noopener">→ repo</a>
+      </div></section>
+    <section id="skills" class="section">
+      <h2 class="section-title">skills</h2>
+      <p class="skills-headline">JavaScript is my main power — the rest orbits around it.</p>
+      <div class="skills-grid">
+        
+          <div class="skill-group">
+            <h3 class="skill-group-title">Languages</h3>
+            <ul><li>JavaScript</li><li>TypeScript</li><li>C</li><li>Assembly</li><li>Python</li><li>SQL</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-title">Backend</h3>
+            <ul><li>Node.js</li><li>NestJS</li><li>Express</li><li>Kafka</li><li>Prisma</li><li>PostgreSQL</li><li>MongoDB</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-title">Frontend</h3>
+            <ul><li>React</li><li>Next.js</li><li>Tailwind</li><li>htmx</li><li>vanilla DOM</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-title">Environment</h3>
+            <ul><li>Arch Linux</li><li>Neovim / vim</li><li>Docker</li><li>Git</li><li>Make</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-title">Deploy</h3>
+            <ul><li>Vercel</li><li>Railway</li><li>Neon</li></ul>
+          </div>
+      </div></section>
+    <section id="articles" class="section">
+      <h2 class="section-title">articles</h2>
+      
+        <a class="article-item" href="articles/build-your-own-json-serializer.html">
+          <span class="article-title">Build your own JSON serializer</span>
+          <span class="article-date">2025</span>
+          <p class="article-summary">How to write JSON.stringify from scratch in pure JavaScript — escaping strings the hard way, the primitive types, toJSON, and circular references. From the vanilla-json docs.</p>
+        </a></section>
+    <section id="certificates" class="section">
+      <h2 class="section-title">certificates</h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+      <div class="cert-title">Full-Stack JavaScript Program</div>
+      <div class="cert-issuer">GoMyCode</div>
+      <div class="cert-date">January — June 2023</div>
+      <p class="cert-note">Six-month intensive full-stack JavaScript bootcamp.</p></div><div class="cert-card">
+      <div class="cert-title">Just JavaScript</div>
+      <div class="cert-issuer">Dan Abramov &amp; Maggie Appleton</div>
+      <div class="cert-date">2026</div>
+      <p class="cert-note">All 10 episodes — mental models of how JavaScript actually works.</p></div><div class="cert-card">
+      <div class="cert-title">Learn JavaScript</div>
+      <div class="cert-issuer">Boot.dev</div>
+      <div class="cert-date">August 2025</div>
+      <p class="cert-note">Functions, prototypes, classes, sets &amp; maps, error handling, async, the event loop.</p></div><div class="cert-card">
+      <div class="cert-title">Learn Linux</div>
+      <div class="cert-issuer">Boot.dev</div>
+      <div class="cert-date">August 2025</div>
+      <p class="cert-note">Command line, shell scripting, permissions, I/O redirection, processes, packages.</p></div><div class="cert-card">
+      <div class="cert-title">Introduction to Python</div>
+      <div class="cert-issuer">Boot.dev</div>
+      <div class="cert-date">September 2025</div>
+      <p class="cert-note">Fundamentals, data structures, control flow, exceptions, debugging.</p></div><div class="cert-card">
+      <div class="cert-title">Build a BookBot in Python</div>
+      <div class="cert-issuer">Boot.dev</div>
+      <div class="cert-date">June 2026</div>
+      <p class="cert-note">File I/O, text processing, data analysis, CLI arguments — a real project end to end.</p></div>
+      </div></section>
+    <section id="beyond" class="section">
+      <h2 class="section-title">beyond the code</h2>
+      <div class="langs"><span class="lang">Arabic <span>· native</span></span><span class="lang">English <span>· fluent</span></span><span class="lang">French <span>· fluent</span></span><span class="lang">Russian <span>· conversational</span></span></div>
+      <div class="passion-grid"><div class="passion"><h3>Literature &amp; philosophy</h3><p>A big Dostoevsky fan — my favorite of his is A Raw Youth, which most people skip and shouldn&#39;t. Two years living between Saint Petersburg and Moscow made the Russians feel less like reading and more like memory.</p></div><div class="passion"><h3>Watchmaking</h3><p>Vacheron Constantin and Patek Philippe are the poles of my compass; the Jaeger-LeCoultre Reverso is my favorite watch ever made. Working for one of these houses one day is an actual goal, not a daydream — it&#39;s the same obsession as low-level code: small parts, exact tolerances, nothing hidden.</p></div><div class="passion"><h3>Machines, all the way down</h3><p>I like understanding the full stack in the literal sense — hardware up through assembly, C, and the runtimes on top. It&#39;s why I keep rebuilding tools from scratch: the floor should never be mysterious.</p></div></div></section>
 
-    <footer id="footer"></footer>
+    <footer id="footer">
+      <p class="footer-cta">Let’s build something.</p>
+      <p class="footer-line">Open to interesting work — especially anything close to the metal.</p>
+      <div class="footer-links">
+        <a href="mailto:rabiayoucef77@gmail.com">rabiayoucef77@gmail.com</a>
+        <a href="https://github.com/MantasEdine" target="_blank" rel="noopener">github</a>
+        <a href="assets/Youcef_Rabia_CV.pdf" download>download cv</a>
+      </div>
+      <p class="footer-tiny">© 2026 Youcef Rabia · built with vanilla HTML/CSS/JS — no framework, obviously</p></footer>
   </main>
 
   <!-- ==========================================================
@@ -51,6 +226,7 @@
   <script src="data/certificates.js"></script>
   <script src="data/beyond.js"></script>
 
+  <script src="js/templates.js"></script>
   <script src="js/render.js"></script>
 </body>
 </html>
