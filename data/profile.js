@@ -9,7 +9,7 @@ window.PORTFOLIO.profile = {
   name: "Youcef Rabia",
 
   // Short line under your name in the hero
-  tagline: "Software developer. JavaScript at the surface, C and assembly underneath.",
+  tagline: "Software developer. JavaScript and C++ expert.",
 
   // Small mono line above your name (terminal-style prompt)
   kicker: "~/youcef-rabia",
