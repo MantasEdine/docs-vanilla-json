@@ -1,0 +1,71 @@
+/* ============================================================
+   ARTICLE STYLE — same look as the vanilla-json docs:
+   deep navy, terminal green, Source Code Pro everywhere.
+   All article pages share this file.
+   ============================================================ */
+:root {
+  --bg:     #0f0f23;
+  --panel:  #16162e;
+  --text:   #d4d4d4;
+  --dim:    #8b8ba7;
+  --accent: #00cc00;
+  --star:   #ffff66;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.7;
+}
+
+.article-nav { margin-bottom: 2.5rem; font-size: 0.85rem; }
+
+h1 { color: var(--accent); line-height: 1.2; }
+h2 { color: var(--star); margin-top: 2.6rem; }
+h3 { color: var(--accent); margin-top: 2rem; }
+
+.article-meta { color: var(--dim); font-size: 0.85rem; margin-top: -0.6rem; }
+
+a { color: var(--accent); }
+a:hover { color: var(--star); }
+
+strong { color: #fff; }
+em { color: var(--star); font-style: normal; }
+
+p > code, li > code {
+  background: var(--panel);
+  border: 1px solid #2a2a4a;
+  border-radius: 3px;
+  padding: 0.08rem 0.35rem;
+  font-size: 0.9em;
+  color: var(--star);
+}
+
+pre {
+  background: var(--panel);
+  border: 1px solid var(--star);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+pre code { color: var(--text); font-size: 0.88rem; }
+
+footer {
+  margin-top: 4rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--star);
+  text-align: center;
+  font-size: 0.9rem;
+}
+footer a { margin: 0 0.6rem; text-decoration: none; }
+footer p { color: var(--accent); font-weight: bold; }
+
+@media (max-width: 600px) {
+  body { padding: 1rem; }
+}
