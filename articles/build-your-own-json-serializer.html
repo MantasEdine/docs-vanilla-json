@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build your own JSON serializer — Youcef Rabia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>λ</text></svg>">
+  <link rel="stylesheet" href="article.css">
+</head>
+<body>
+  <nav class="article-nav"><a href="../index.html">← back to portfolio</a></nav>
+
+  <h1>Build your own JSON serializer</h1>
+  <p class="article-meta">by Youcef Rabia · from the <a href="https://github.com/MantasEdine/vanilla-json">vanilla-json</a> docs</p>
+
+  <p>Why build another JSON engine? Because <code>JSON.stringify</code> is a tool I use every single day, and for years I had no idea what it actually did. Rebuilding it from scratch turned out to be the perfect project: small enough to finish, deep enough to teach you real things about JavaScript. So today, dear reader, we're writing our own serializer in pure JS. And yes, I LOVE JAVASCRIPT (:</p>
+
+  <h2>What a serializer is</h2>
+  <p>A serializer turns a live value from your language into a JSON-formatted text string — something you can save to a file or send across a network:</p>
+  <pre><code>{ test: "Bonjour" }   ──►   '{"test":"Bonjour"}'
+   a live JS object          a string of text</code></pre>
+  <p>That's the whole job. The interesting part is the edge cases — and JSON has a lot of them.</p>
+
+  <h2>The skeleton</h2>
+  <p>Everything hangs off one recursive function that switches on <code>typeof</code>:</p>
+  <pre><code>function stringify(input) {
+    const seen = new WeakSet()   // for circular references — more on this later
+
+    function serialize(input) {
+        switch (typeof input) {
+            case "string":    /* ... */
+            case "number":    /* ... */
+            case "boolean":   /* ... */
+            case "bigint":    /* ... */
+            case "undefined": /* ... */
+            case "object":    /* ... */
+        }
+    }
+
+    return serialize(input)
+}</code></pre>
+  <p>We'll fill these in one by one, easiest last-but-one. Strings first, because strings are where beginners get humbled.</p>
+
+  <h2>Strings — easy, until they aren't</h2>
+  <p>Your first instinct is right: wrap the input in quotes and return it. <code>"hello"</code> becomes <code>'"hello"'</code>, done. That works... until the string contains a newline, a tab, or a quote. Then your output is broken JSON.</p>
+  <p>So you escape them: <code>"Hello \n World"</code> must become <code>"Hello \\n World"</code>. Smart, GOOD JOB! Now — after handling <code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\"</code> and <code>\\</code>, are we done?</p>
+  <p>Close. There are about 25 more characters to handle, LOL.</p>
+  <p>Here's the beautiful part: the character set is <em>organised</em>. Every character in a computer is just a number (that's all "encoding" means — <code>H</code> is 72, or <code>0x48</code> in hex), and the designers of ASCII put <strong>all</strong> the control characters in one block: codes 0 through 31 (<code>0x00</code>–<code>0x1F</code>). So instead of 30 special cases, one range check catches everything:</p>
+  <pre><code>case "string": {
+    let str = ""
+    for (let i = 0; i &lt; input.length; i++) {
+        const ch = input[i]
+        if (ch === '"')  { str += '\\"'  ; continue }
+        if (ch === "\\") { str += "\\\\" ; continue }
+        if (ch === "\n") { str += "\\n"  ; continue }
+        if (ch === "\t") { str += "\\t"  ; continue }
+        if (ch === "\r") { str += "\\r"  ; continue }
+
+        if (input.charCodeAt(i) &lt;= 0x1F) {
+            // any remaining control char → \u00XX escape
+            str += "\\u" + input.charCodeAt(i).toString(16).padStart(4, "0")
+        } else {
+            str += ch
+        }
+    }
+    return '"' + str + '"'
+}</code></pre>
+  <p>The named escapes (<code>\n</code>, <code>\t</code>...) exist only because they're prettier than <code>\u000a</code> — the range check alone would produce valid JSON. Confession: in vanilla-json I only discovered the range trick at version 0.1.2, so my early hand-written cases stayed in as legacy. They cost basically nothing. красавчик!</p>
+  <p><strong>Quick remark:</strong> strings in JS are primitive values, even though they act object-ish. When you call a method on one, JS wraps it in a temporary object on the fly and throws it away after. You've been using disposable objects this whole time.</p>
+
+  <h2>The two-minute cases</h2>
+  <p>Booleans, numbers, BigInts and undefined — this will literally take two minutes:</p>
+  <pre><code>case "boolean":   return String(input)
+
+case "bigint":    throw new TypeError("Do not know how to serialize a BigInt")
+
+case "number":
+    return Number.isFinite(input) ? String(input) : "null"
+
+case "undefined": return undefined</code></pre>
+  <p>Three of these deserve a sentence:</p>
+  <p><strong>Numbers:</strong> JSON has no way to write <code>Infinity</code> or <code>NaN</code>, so native <code>JSON.stringify</code> quietly turns them into <code>null</code>. We copy that. Think of the serializer as a black hole — whatever falls in comes out stringified on the other side, and what can't be stringified comes out as <code>null</code>.</p>
+  <p><strong>BigInt:</strong> the native one throws here, so we throw the same error. Matching native behavior including the errors is the whole game.</p>
+  <p><strong>undefined:</strong> we return JS <code>undefined</code> itself, not the string <code>"undefined"</code>. This is a signal to the caller — you'll see why when we get to objects: a key whose value serializes to <code>undefined</code> simply gets dropped.</p>
+  <p>And <code>null</code>? Fun fact: <code>typeof null === "object"</code>. That's a historical bug, kept forever for compatibility — null is really its own primitive type. It means null falls into our <code>"object"</code> case, so that's where we'll handle it.</p>
+
+  <h2>Objects — where everything comes together</h2>
+  <pre><code>case "object": {
+    if (input === null) return "null"          // the typeof-null bug, handled
+
+    if (typeof input.toJSON === "function")    // duck typing — see below
+        return serialize(input.toJSON())
+
+    if (seen.has(input))                       // circular reference guard
+        throw new TypeError("Converting circular structure to JSON")
+    seen.add(input)                            // "I'm inside this one now"
+
+    let out
+    if (Array.isArray(input)) {
+        const parts = []
+        for (const item of input)
+            parts.push(serialize(item) ?? "null")   // undefined in arrays → null
+        out = "[" + parts.join(",") + "]"
+    } else {
+        const parts = []
+        for (const key of Object.keys(input)) {
+            const piece = serialize(input[key])
+            if (piece === undefined) continue        // undefined values → key dropped
+            parts.push(serialize(key) + ":" + piece) // serialize the key too — it may need escaping!
+        }
+        out = "{" + parts.join(",") + "}"
+    }
+
+    seen.delete(input)                         // "done, leaving"
+    return out
+}</code></pre>
+  <p>Four ideas live in this block, and each one is worth having in your head:</p>
+
+  <h3>1. toJSON — the object speaks for itself</h3>
+  <p>Before serializing an object, we check whether it has a <code>toJSON</code> method, and if so we serialize <em>what it returns</em> instead. This is how <code>Date</code> turns into an ISO string, and how you keep a <code>password</code> field from ever being serialized and sent over the internet, lol. The pattern is called <strong>duck typing</strong>: we don't ask what the object <em>is</em>, only whether it can quack.</p>
+
+  <h3>2. Arrays are just objects</h3>
+  <p>Yes — <code>typeof []</code> is <code>"object"</code>, which is why arrays are handled inside this case with <code>Array.isArray</code>. Meanwhile functions get their own <code>typeof</code>... even though under the hood functions <em>are</em> special objects. Is everything in JS an object? No — that's a stereotype. JS is amazing!!</p>
+  <p>Note the asymmetry we inherit from native: <code>undefined</code> <em>inside an array</em> becomes <code>null</code> (arrays can't have holes in JSON), but <code>undefined</code> <em>as an object value</em> drops the whole key. Same input, two behaviors, both matched.</p>
+
+  <h3>3. The WeakSet — surviving circular references</h3>
+  <p>What happens if an object contains itself?</p>
+  <pre><code>const a = {}
+a.self = a
+stringify(a)   // without a guard: infinite recursion, stack overflow</code></pre>
+  <p>The <code>seen</code> WeakSet is the guard. Before descending into an object we check "am I already inside this one?" — if yes, we throw the same <code>TypeError</code> native does. We add on the way in and delete on the way out, so the same object appearing <em>twice</em> (sibling references — fine) is not confused with an object containing <em>itself</em> (circular — fatal). And it's a <em>Weak</em>Set so the guard never keeps objects alive in memory longer than the walk itself.</p>
+
+  <h3>4. Keys are strings too</h3>
+  <p>A subtle one my first version got wrong: object keys go through the string serializer as well, because a key like <code>'he said "hi"'</code> needs the exact same escaping as any value. Reuse the machinery you already built.</p>
+
+  <h2>That's the whole thing</h2>
+  <p>Check the type, escape the strings, match the native quirks, guard the cycles. Recursion does the rest — every nested value just falls back into <code>serialize</code> until only text remains.</p>
+  <p>Make sure to READ CODE, not just this article — and you, my friend, have built a JSON serializer in pure JavaScript. The parser (tokenizer + recursive descent) is a whole other adventure, and it lives in the same repo.</p>
+
+  <footer>
+    <p>Written by Youcef Rabia</p>
+    <a href="https://github.com/MantasEdine">GitHub</a>
+    <a href="https://github.com/MantasEdine/vanilla-json">vanilla-json repo</a>
+    <a href="../index.html">Portfolio</a>
+  </footer>
+</body>
+</html>

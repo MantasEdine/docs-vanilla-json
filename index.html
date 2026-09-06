@@ -1,196 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>vanilla-json</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youcef Rabia — Software Developer</title>
+  <meta name="description" content="Youcef Rabia — software developer. JavaScript at the surface, C and assembly underneath. Algiers, Algeria.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>λ</text></svg>">
 </head>
 <body>
-    <h1>vanilla-json</h1>
-    <h3>Download Package from NPM, Click to Copy: <span id="copyme">npm i @rabia_youcef/vanilla-json</span></h3>
-    <p>Why another JSON engine? Well, I wanted to make something that not only taught me how a set of tools I use daily on my coding journey works, but also takes my skills to the next level. I think building a JSON engine is the perfect project for that. So today, dear reader, I'll teach you how to write your own in JavaScript. And yes, I LOVE JAVASCRIPT (:</p>
 
-    <h2>Serializer</h2>
-    <p>A JSON serializer turns a data object or structure from a programming language into a text string in JavaScript Object Notation (JSON) format. This string can easily be saved to a file or sent across a network.</p>
-    <p>{test: "Bonjour"} ----> {"test": "Bonjour"}</p>
-    <p>{regular JS object} ----> {JSON format for the JS object}</p>
-    <p>There are actually several cases, and we won't be able to go through them all, but you can write any data in JS and convert it here to get an idea if you've never done it before.</p>
-    <a href="https://www.convertsimple.com/convert-javascript-to-json">CHECK OUT CONVERTER</a>
+  <nav id="nav">
+    <a class="nav-home" href="#top">yr</a>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#articles">articles</a>
+      <a href="#certificates">certificates</a>
+      <a href="#beyond">beyond</a>
+    </div>
+  </nav>
 
-    <h3>Best Part</h3>
-    <p>For now, I think everyone has an idea of what we'll start with. We will implement our own <span>JSON.stringify</span> in JavaScript.</p>
-    <h4>I will write the code first, let you think about it, and then I'll explain every line written.</h4>
+  <main id="top">
+    <header id="hero"></header>
 
-    <pre><code>function stringify(input) {
-    let seen = new WeakSet()
-    function serialize(input) {
-        switch (typeof input) {
-            case "string": {
-                let str = ""
-                for (let i = 0; i < input.length; i++) {
-                    if (input[i] === '"') {
-                        str += '\\"'
-                    } else if (input[i] === "\\") {
-                        str += "\\\\"
-                    } else if (input[i] === "\n") {
-                        str += '\\n'
-                    } else if (input[i] === "\t") {
-                        str += '\\t'
-                    } else if (input[i] === '\r') {
-                        str += '\\r'
-                    } else if (input[i] === '\b') {
-                        str += '\\b'
-                    } else if (input[i] === '\f') {
-                        str += '\\f'
-                    } else if (input.charCodeAt(i) <= 0x1F) {
-                        str += '\\u' + input.charCodeAt(i).toString(16).padStart(4, '0')
-                    } else {
-                        str += input[i]
-                    }
-                }
-                return '"' + str + '"'
-            }
-        }
-    }
-}</code></pre>
+    <section id="about" class="section"></section>
+    <section id="experience" class="section"></section>
+    <section id="projects" class="section"></section>
+    <section id="skills" class="section"></section>
+    <section id="articles" class="section"></section>
+    <section id="certificates" class="section"></section>
+    <section id="beyond" class="section"></section>
 
-    <p>I stopped here because I had to explain this part very well. Working with strings is easy, until you meet a special character. X)</p>
-    <p>You might say: "Easy, I'll just mimic the behaviour of the original." So a string containing a newline becomes:</p>
-    <p>"Hello \n World"  ---->  "Hello \\n World"</p>
-    <p>That's smart, GOOD JOB! A quick remark: if the string does not contain any special character, we simply <span id="return">return "the_input_string"</span>, and if it does contain special characters, we loop through it and escape them, as I showed above.</p>
-    <p>After dealing with tab, newline, backspace and so on, are we done? Well, close. We still have around 25 more characters to handle, LOL.</p>
-    <p>No worries, I didn't know we had that many either, but the happy part is we can deal with all of them using a single condition (including tab). So why did we write the earlier statements at all? Well, I built this from scratch, and I only learned about this catch-all option when I was on version 0.1.2, so I kept the earlier code as legacy. Don't worry, that <span>if</span> statement barely costs any compute.</p>
+    <footer id="footer"></footer>
+  </main>
 
-    <h4>Strings:</h4>
-    <p>The most important part is dealing with strings!</p>
-    <pre><code>// you checked the type of input and found it's a String:
+  <!-- ==========================================================
+       CONTENT lives in these files. Edit them, not the code.
+       Order matters only in that they must load before render.js.
+       ========================================================== -->
+  <script src="data/profile.js"></script>
+  <script src="data/experience.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="data/skills.js"></script>
+  <script src="data/articles.js"></script>
+  <script src="data/certificates.js"></script>
+  <script src="data/beyond.js"></script>
 
-
-let str = ""
-for (let i = 0; i < input.length; i++) {
-
-    if (input.charCodeAt(i) <= 0x1F) {
-        str += '\\u' + input.charCodeAt(i).toString(16).padStart(4, '0')
-    } else {
-        str += input[i]
-    }
-}
-return '"' + str + '"'
-
-========================================== COMMENTS ================================================================
-
-
-// And that's it, we're done dealing with Strings ))
-// Okay...
-// so what is all this charCodeAt(i), 0x1F???  what is all thisssss
-// trust me this is so basic
-// input.charCodeAt(i) simply gives me the character code in hex at the given index i
-// example string: "Hello World", with i = 0, so input[0] = 0x48, which is simply H in hexadecimal, that's it
-// okay, and? what is the point of getting string values in hexadecimal
-// hexadecimal is a way to write a numerical value. we humans use decimal
-// hexadecimal and binary are ways to represent numerical values in a computer
-// and yes, anything represented in a computer is a numerical value
-// including that H: 0x48 in decimal is 72
-// am I saying all chars, including special chars, are represented as numerical values written in hex or binary? YES
-// and more beautifully, they are even organised: all special chars are from 0 to 31
-// so all 32 of those chars are special and should be checked? BRAVO
-// so the loop simply converts to hex and checks the interval 0 to 31
-// красавчик (Krasavchik)!! (Handsome in Russian, but also used as slang for smart)
-// then we replace each one with what's needed: a control character like newline (code 10) becomes \\u000a</code></pre>
-
-    <p>And obviously if no special character is present we simply build our string as we always do, give it extra quotes (function is called stringify for a reason, I mean you can name it whatever you want just understand how it works).</p>
-
-    <p><span>Quick Remark</span>: Strings in JS are primitive-value type even if they behave like Arrays or Objects, they are not when you use a method on them and it works JS simply creates an Object on the fly that gets deleted later.</p>
-
-    <h4>Booleans, BigInts, Numbers and Undefined:</h4>
-    <p>This will take 2 minutes to implement literally.</p>
-    <pre><code>case "boolean": return String(input)
-case "bigint" : throw new TypeError("Do not know how to serialize a BigInt")
-
-case "number":
-     if (Number.isFinite(input)) {
-        return String(input)
-     } else {
-        return "null"
-     }
-case "undefined": return undefined</code></pre>
-
-    <p>As you have noticed, dear reader, implementation is pretty straightforward. <span>if</span> boolean, convert to string. <span>if</span> BigInt, just throw an error — JS doesn't know how to convert BigInts. <span>if</span> number, well, kinda tricky, but easy: if finite, convert to string and return, but infinite, like <span>+Infinity</span>, and some other cases you can Google. Well, easy — JS doesn't know how to deal with those either, so return null, but inside string literals this time. Don't forget: this is like a black hole — whatever goes inside gets stringified from the other side.))))))</p>
-
-    <p>I wanted to mention that undefined, numbers, BigInts, and booleans are also primitive value types.</p>
-
-    <p>You might be wondering what other primitive values there are in the JS world. Well, there are Symbols, which I won't mention because I have no idea what they are used for and never had a case where I needed them. And null.</p>
-
-    <p>And null — even though if you do <code>typeof(null)</code> you will get <code>"object"</code>, that's a bug. In reality, it's a type of its own, and it's a primitive value type. Like <code>typeof(5) === "number"</code>, in reality <code>typeof(null) === "null"</code>. Read more <a href="https://dev.to/m0slah/why-typeof-null-object-in-javascript-a-deep-dive-into-a-quirky-bug-n6p">here</a>.</p>
-
-    <p>Now, the last part of our project serializer</p>
-
-    <h4>Objects:</h4>
-
-    <pre><code>case "object":
-    if (input === null) {
-        return "null"
-    }
-
-    else if (typeof input.toJSON === "function") {
-        return serialize(input.toJSON());
-    } else if (Array.isArray(input)) {
-        if (seen.has(input)) throw new TypeError("Converting circular structure to JSON")  // ← guard
-        seen.add(input)                                                                    // ← "I'm inside now"
-
-        if (input.length > 0) {
-            let str = "["
-            for (let i = 0; i < input.length; i++) {
-                str += (serialize(input[i]) ?? "null") + ","
-            }
-            seen.delete(input)                                                             // ← "done, leaving"
-            return str.slice(0, -1) + "]"
-        } else {
-            seen.delete(input)                                                             // ← same, empty case
-            return "[]"
-        }
-
-    } else {
-        if (seen.has(input)) throw new TypeError("Converting circular structure to JSON")  // ← guard
-        seen.add(input)                                                                    // ← "I'm inside now"
-
-        let key_s = Object.keys(input)
-        let str = "{"
-        for (let i = 0; i < key_s.length; i++) {
-            let piece = serialize(input[key_s[i]])
-            if (piece === undefined) continue
-            str += '"' + key_s[i] + '":' + piece + ","
-        }
-
-        seen.delete(input)                                                                 // ← "done, leaving"
-        if (str !== "{") {
-            return str.slice(0, -1) + "}"
-        } else {
-            return "{}"
-        }
-    }
-}
-
-return serialize(input)</code></pre>
-
-    <p>First, we check what type of object we are dealing with. If it's null (bug we mentioned before that typeof(null) expression results in object), anyway, that's simple: we return "null".</p>
-    <p>In the next if statement, you noticed I checked our input.toJSON if it is a function. I serialize what that function returns. What does that even mean???</p>
-    <p>Well, it's so simple. It's just a method you implement on objects which you can also find implemented on built-in objects like Date objects and so on (JSON method).</p>
-    <p>What is the use case of it? Well, we said when we find it, we serialize what it returns! Okay, and why? So the serializer serialises what we want, not everything. Imagine if one of your object properties is password: you don't want that serialized and sent over the Internet for sure, lol.</p>
-    <p>This technique is called duck typing or protocol-based design in JS because it changes from one language to another. For instance, in C++, duck typing is implemented differently.</p>
-    <p>The second case is arrays, and yes, arrays are objects, not a special type. So sad. Actually, it's cool. That's why I love JS: functions are a type and arrays are not, lol. But fun fact: under the hood, functions are special objects. So, is it true that everything in JS is an object? No, that's a stereotype. JS is amazing!!!!</p>
-    <p>Don't pay any attention to WeakSet or seen: that's to avoid circular references, another whole universe. If you like this article, I might make one about that HOT TOPIC, hehe.</p>
-    <p>As you noticed, I built an array and serialized every element, and then returned it inside quotes, and did the same thing for objects? Wow, that is it. That's the explanation. Well, yes, because that is really all I did, lol. Check the type, open { or [, and serialize the content for arrays and values for objects, close the array and return the keys with quotes and their serialized values, close the object too. Return. If empty, return "[]" or "{}". And that is it.</p>
-    <p>Make sure to READ CODE, and you, my friend, have successfully built your SERIALIZER in pure JS.</p>
-
-    <footer>
-        <p>Article Written By Rabia Youcef</p>
-        <a href="https://github.com/MantasEdine">Github</a>
-        <p>FORK</p>
-        <a href="https://github.com/MantasEdine/vanilla-json/tree/main">Project Link</a>
-    </footer>
-
-    <script src="app.js"></script>
+  <script src="js/render.js"></script>
 </body>
 </html>
